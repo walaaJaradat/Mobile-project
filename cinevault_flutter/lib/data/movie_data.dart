@@ -1,70 +1,137 @@
 import '../models/movie.dart';
 
 final List<Movie> movies = [
-
   Movie(
     title: 'John Wick 4',
     genre: 'Action',
     rating: 8.1,
     year: 2023,
     description: 'Action movie',
-    imageName: 'johnwick.png',
+    imageName: 'johnwick.jpg',
   ),
-
   Movie(
     title: 'Mission: Impossible',
     genre: 'Action',
     rating: 7.8,
     year: 2023,
     description: 'Spy action movie',
-    imageName: 'mission.png',
+    imageName: 'mission.jpg',
   ),
-
   Movie(
     title: 'The Dark Knight',
     genre: 'Action',
     rating: 9.0,
     year: 2008,
     description: 'Batman crime action movie',
-    imageName: 'darkknight.png',
+    imageName: 'darkknight.jpg',
   ),
-
   Movie(
     title: 'Mad Max: Fury Road',
     genre: 'Action',
     rating: 8.1,
     year: 2015,
     description: 'Post-apocalyptic action movie',
-    imageName: 'madmax.png',
+    imageName: 'madmax.webp',
   ),
-
   Movie(
     title: 'The Hangover',
     genre: 'Comedy',
     rating: 7.7,
     year: 2009,
     description: 'Comedy movie',
-    imageName: 'hangover.png',
+    imageName: 'hangover.jpg',
   ),
-
+  Movie(
+    title: 'Superbad',
+    genre: 'Comedy',
+    rating: 7.6,
+    year: 2007,
+    description: 'Teen comedy movie',
+    imageName: 'superbad.jpg',
+  ),
+  Movie(
+    title: 'Night at the Museum',
+    genre: 'Comedy',
+    rating: 6.5,
+    year: 2006,
+    description: 'Family comedy movie',
+    imageName: 'museum.jpg',
+  ),
+  Movie(
+    title: 'Home Alone',
+    genre: 'Comedy',
+    rating: 7.6,
+    year: 1990,
+    description: 'Christmas comedy movie',
+    imageName: 'homealone.jpg',
+  ),
+  Movie(
+    title: 'The Shawshank Redemption',
+    genre: 'Drama',
+    rating: 9.3,
+    year: 1994,
+    description: 'Prison drama movie',
+    imageName: 'shawshank.jpg',
+  ),
+  Movie(
+    title: 'Forrest Gump',
+    genre: 'Drama',
+    rating: 8.8,
+    year: 1994,
+    description: 'Life drama movie',
+    imageName: 'forrest.jpg',
+  ),
+  Movie(
+    title: 'The Godfather',
+    genre: 'Drama',
+    rating: 9.2,
+    year: 1972,
+    description: 'Crime drama movie',
+    imageName: 'godfather.jpg',
+  ),
+  Movie(
+    title: 'A Beautiful Mind',
+    genre: 'Drama',
+    rating: 8.2,
+    year: 2001,
+    description: 'Biographical drama movie',
+    imageName: 'beautifulmind.jpg',
+  ),
   Movie(
     title: 'Frozen',
     genre: 'Kids',
     rating: 7.4,
     year: 2013,
     description: 'Animated kids movie',
-    imageName: 'frozen.png',
+    imageName: 'frozen.jpg',
   ),
-
+  Movie(
+    title: 'Toy Story 4',
+    genre: 'Kids',
+    rating: 7.7,
+    year: 2019,
+    description: 'Animated kids movie',
+    imageName: 'toystory.jpg',
+  ),
+  Movie(
+    title: 'The Lion King',
+    genre: 'Kids',
+    rating: 6.9,
+    year: 2019,
+    description: 'Family adventure movie',
+    imageName: 'lionking.jpg',
+  ),
+  Movie(
+    title: 'Spider-Man: Into the Spider-Verse',
+    genre: 'Kids',
+    rating: 8.4,
+    year: 2018,
+    description: 'Animated superhero movie',
+    imageName: 'spiderman.jpg',
+  ),
 ];
 
-final List<String> genres = [
-  'All Genres',
-  'Action',
-  'Comedy',
-  'Drama',
-  'Kids',
-];
+final List<String> genres = ['All Genres', 'Action', 'Comedy', 'Drama', 'Kids'];
 
 final List<String> years = [
   'All Years',
@@ -79,4 +146,10 @@ final List<String> years = [
   '2013',
   '2009',
   '2008',
+  '2007',
+  '2006',
+  '2001',
+  '1994',
+  '1990',
+  '1972',
 ];
