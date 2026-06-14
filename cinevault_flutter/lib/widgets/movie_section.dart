@@ -4,10 +4,16 @@ import '../models/movie.dart';
 import 'movie_card.dart';
 
 class MovieSection extends StatelessWidget {
-  const MovieSection({super.key, required this.title, required this.movies});
+  const MovieSection({
+    super.key,
+    required this.title,
+    required this.movies,
+    this.onMovieTap,
+  });
 
   final String title;
   final List<Movie> movies;
+  final ValueChanged<Movie>? onMovieTap;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +43,13 @@ class MovieSection extends StatelessWidget {
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 12,
               ),
-              itemBuilder: (context, index) => MovieCard(movie: movies[index]),
+              itemBuilder: (context, index) {
+                final movie = movies[index];
+                return MovieCard(
+                  movie: movie,
+                  onTap: onMovieTap == null ? null : () => onMovieTap!(movie),
+                );
+              },
             ),
             const SizedBox(height: 18),
           ],

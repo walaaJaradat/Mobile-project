@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -14,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.adapter.MovieAdapter;
 import com.example.myapplication.viewmodel.MovieViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import model.Movie;
@@ -27,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerKids;
     private Spinner spGenre;
     private Spinner spYear;
+    private EditText edtSearch;
+    private Button btnSearch;
+    private Button bGenre;
+    private Button bYear;
+    private TextView action;
+    private TextView comedy;
+    private TextView drama;
+    private TextView kids;
     private MovieViewModel viewModel;
 
     @Override
@@ -38,6 +47,14 @@ public class MainActivity extends AppCompatActivity {
 
         spGenre = findViewById(R.id.spGenre);
         spYear = findViewById(R.id.spYear);
+        edtSearch = findViewById(R.id.edtSearch);
+        btnSearch = findViewById(R.id.btnSearch);
+        bGenre = findViewById(R.id.bGenre);
+        bYear = findViewById(R.id.bYear);
+        action = findViewById(R.id.action);
+        comedy = findViewById(R.id.comedy);
+        drama = findViewById(R.id.drama);
+        kids = findViewById(R.id.kids);
 
         spGenre.setAdapter(createDarkAdapter(viewModel.getGenres()));
         spYear.setAdapter(createDarkAdapter(viewModel.getYears()));
@@ -47,10 +64,40 @@ public class MainActivity extends AppCompatActivity {
         recyclerDrama = findViewById(R.id.recyclerDrama);
         recyclerKids = findViewById(R.id.recyclerKids);
 
-        setupRecycler(recyclerAction, "Action");
-        setupRecycler(recyclerComedy, "Comedy");
-        setupRecycler(recyclerDrama, "Drama");
-        setupRecycler(recyclerKids, "Kids");
+        showAllMovies();
+        setupClickListeners();
+    }
+
+    private void setupClickListeners() {
+        btnSearch.setOnClickListener(v -> {
+            String title = edtSearch.getText().toString().trim();
+
+            if (title.isEmpty()) {
+                showAllMovies();
+            } else {
+                showSearchResults(title);
+            }
+        });
+
+        bGenre.setOnClickListener(v -> {
+            String selectedGenre = spGenre.getSelectedItem().toString();
+
+            if (selectedGenre.equalsIgnoreCase("All Genres")) {
+                showAllMovies();
+            } else {
+                showSelectedGenre(selectedGenre);
+            }
+        });
+
+        bYear.setOnClickListener(v -> {
+            String selectedYear = spYear.getSelectedItem().toString();
+
+            if (selectedYear.equalsIgnoreCase("All Years")) {
+                showAllMovies();
+            } else {
+                showMoviesByYear(selectedYear);
+            }
+        });
     }
 
     private ArrayAdapter<String> createDarkAdapter(String[] items) {
@@ -74,21 +121,72 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRecycler(RecyclerView recyclerView, String genre) {
+        setupRecyclerWithMovies(recyclerView, viewModel.getMoviesByGenre(genre));
+    }
+
+    private void setupRecyclerWithMovies(RecyclerView recyclerView, List<Movie> movies) {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        recyclerView.setAdapter(new MovieAdapter(filterByGenre(genre)));
+        recyclerView.setAdapter(new MovieAdapter(movies));
     }
 
-    private List<Movie> filterByGenre(String genre) {
-        List<Movie> filtered = new ArrayList<>();
+    private void showAllMovies() {
+        setSectionVisible(action, recyclerAction, true);
+        setSectionVisible(comedy, recyclerComedy, true);
+        setSectionVisible(drama, recyclerDrama, true);
+        setSectionVisible(kids, recyclerKids, true);
 
-        for (Movie movie : viewModel.getMovies()) {
-            if (movie.getGenre().equalsIgnoreCase(genre)) {
-                filtered.add(movie);
-            }
+        setupRecycler(recyclerAction, "Action");
+        setupRecycler(recyclerComedy, "Comedy");
+        setupRecycler(recyclerDrama, "Drama");
+        setupRecycler(recyclerKids, "Kids");
+    }
+
+    private void showSelectedGenre(String genre) {
+        setSectionVisible(action, recyclerAction, genre.equalsIgnoreCase("Action"));
+        setSectionVisible(comedy, recyclerComedy, genre.equalsIgnoreCase("Comedy"));
+        setSectionVisible(drama, recyclerDrama, genre.equalsIgnoreCase("Drama"));
+        setSectionVisible(kids, recyclerKids, genre.equalsIgnoreCase("Kids"));
+
+        if (genre.equalsIgnoreCase("Action")) {
+            setupRecycler(recyclerAction, "Action");
+        } else if (genre.equalsIgnoreCase("Comedy")) {
+            setupRecycler(recyclerComedy, "Comedy");
+        } else if (genre.equalsIgnoreCase("Drama")) {
+            setupRecycler(recyclerDrama, "Drama");
+        } else if (genre.equalsIgnoreCase("Kids")) {
+            setupRecycler(recyclerKids, "Kids");
         }
+    }
 
-        return filtered;
+    private void showMoviesByYear(String year) {
+        setSectionVisible(action, recyclerAction, true);
+        setSectionVisible(comedy, recyclerComedy, true);
+        setSectionVisible(drama, recyclerDrama, true);
+        setSectionVisible(kids, recyclerKids, true);
+
+        setupRecyclerWithMovies(recyclerAction, viewModel.getMoviesByGenreAndYear("Action", year));
+        setupRecyclerWithMovies(recyclerComedy, viewModel.getMoviesByGenreAndYear("Comedy", year));
+        setupRecyclerWithMovies(recyclerDrama, viewModel.getMoviesByGenreAndYear("Drama", year));
+        setupRecyclerWithMovies(recyclerKids, viewModel.getMoviesByGenreAndYear("Kids", year));
+    }
+
+    private void showSearchResults(String title) {
+        setSectionVisible(action, recyclerAction, true);
+        setSectionVisible(comedy, recyclerComedy, true);
+        setSectionVisible(drama, recyclerDrama, true);
+        setSectionVisible(kids, recyclerKids, true);
+
+        setupRecyclerWithMovies(recyclerAction, viewModel.searchMoviesByTitleAndGenre(title, "Action"));
+        setupRecyclerWithMovies(recyclerComedy, viewModel.searchMoviesByTitleAndGenre(title, "Comedy"));
+        setupRecyclerWithMovies(recyclerDrama, viewModel.searchMoviesByTitleAndGenre(title, "Drama"));
+        setupRecyclerWithMovies(recyclerKids, viewModel.searchMoviesByTitleAndGenre(title, "Kids"));
+    }
+
+    private void setSectionVisible(TextView title, RecyclerView recyclerView, boolean visible) {
+        int visibility = visible ? View.VISIBLE : View.GONE;
+        title.setVisibility(visibility);
+        recyclerView.setVisibility(visibility);
     }
 }

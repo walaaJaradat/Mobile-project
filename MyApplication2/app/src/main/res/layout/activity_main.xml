@@ -35,16 +35,33 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:background="#141414"
-            android:focusable="false"
-            android:hint="Search movies..."
-            android:padding="10dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#B0B0B0" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edtSearch"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:background="#141414"
+                android:hint="Search movies..."
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#B0B0B0" />
+
+            <Button
+                android:id="@+id/btnSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#E53935"
+                android:text="Search" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -55,13 +72,29 @@
             android:textSize="11sp"
             android:textStyle="bold" />
 
-        <Spinner
-            android:id="@+id/spGenre"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:background="#141414"
-            android:popupBackground="#141414" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spGenre"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:background="#141414"
+                android:popupBackground="#141414" />
+
+            <Button
+                android:id="@+id/bGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#E53935"
+                android:text="Filter" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -72,15 +105,32 @@
             android:textSize="11sp"
             android:textStyle="bold" />
 
-        <Spinner
-            android:id="@+id/spYear"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:background="#141414"
-            android:popupBackground="#141414" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spYear"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:background="#141414"
+                android:popupBackground="#141414" />
+
+            <Button
+                android:id="@+id/bYear"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#E53935"
+                android:text="Filter" />
+        </LinearLayout>
 
         <TextView
+            android:id="@+id/action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
@@ -97,6 +147,7 @@
             android:nestedScrollingEnabled="false" />
 
         <TextView
+            android:id="@+id/comedy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
@@ -113,6 +164,7 @@
             android:nestedScrollingEnabled="false" />
 
         <TextView
+            android:id="@+id/drama"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
@@ -129,6 +181,7 @@
             android:nestedScrollingEnabled="false" />
 
         <TextView
+            android:id="@+id/kids"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"

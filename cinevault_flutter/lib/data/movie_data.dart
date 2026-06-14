@@ -153,3 +153,5 @@ final List<String> years = [
   '1990',
   '1972',
 ];
+
+final List<String> ratings = ['All Ratings', '8.0+', '7.0+', '6.0+'];

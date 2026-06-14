@@ -5,6 +5,7 @@ import '../models/movie.dart';
 import '../widgets/filter_dropdown.dart';
 import '../widgets/movie_section.dart';
 import '../widgets/search_box.dart';
+import 'movie_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String _query = '';
   String _selectedGenre = 'All Genres';
   String _selectedYear = 'All Years';
+  String _selectedRating = 'All Ratings';
 
   List<Movie> get _filteredMovies {
     return movies.where((movie) {
@@ -28,7 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
       final matchesYear =
           _selectedYear == 'All Years' ||
           movie.year.toString() == _selectedYear;
-      return matchesQuery && matchesGenre && matchesYear;
+      final matchesRating =
+          _selectedRating == 'All Ratings' ||
+          movie.rating >=
+              double.parse(_selectedRating.replaceAll('+', '').trim());
+      return matchesQuery && matchesGenre && matchesYear && matchesRating;
     }).toList();
   }
 
@@ -85,6 +91,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 items: years,
                 onChanged: (value) => setState(() => _selectedYear = value),
               ),
+              const SizedBox(height: 14),
+              FilterDropdown(
+                label: 'RATING',
+                value: _selectedRating,
+                items: ratings,
+                onChanged: (value) => setState(() => _selectedRating = value),
+              ),
               const SizedBox(height: 22),
               if (_filteredMovies.isEmpty)
                 const Padding(
@@ -102,6 +115,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     MovieSection(
                       title: '${entry.key} Movies',
                       movies: entry.value,
+                      onMovieTap: (movie) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                MovieDetailScreen(movie: movie),
+                          ),
+                        );
+                      },
                     ),
             ],
           ),
