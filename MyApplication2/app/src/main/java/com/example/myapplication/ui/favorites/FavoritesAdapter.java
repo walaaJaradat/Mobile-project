@@ -1,4 +1,4 @@
-package com.example.myapplication.adapter;
+package com.example.myapplication.ui.favorites;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,25 +16,24 @@ import java.util.List;
 
 import model.Movie;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieVH> {
+public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoriteVH> {
 
     private final List<Movie> movies;
 
-    public MovieAdapter(List<Movie> movies) {
+    public FavoritesAdapter(List<Movie> movies) {
         this.movies = movies;
     }
 
     @NonNull
     @Override
-    public MovieVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FavoriteVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.movie_item, parent, false);
-
-        return new MovieVH(view);
+        return new FavoriteVH(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieVH holder, int position) {
+    public void onBindViewHolder(@NonNull FavoriteVH holder, int position) {
         Movie movie = movies.get(position);
 
         holder.imgMovie.setImageResource(movie.getImageResId());
@@ -49,13 +48,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieVH> {
         return movies.size();
     }
 
-    public static class MovieVH extends RecyclerView.ViewHolder {
+    static class FavoriteVH extends RecyclerView.ViewHolder {
 
         private final ImageView imgMovie;
         private final TextView title;
         private final TextView year;
 
-        public MovieVH(@NonNull View itemView) {
+        FavoriteVH(@NonNull View itemView) {
             super(itemView);
 
             imgMovie = itemView.findViewById(R.id.imgMovie);

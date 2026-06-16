@@ -1,49 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../data/movie_data.dart';
-import '../models/movie.dart';
+import '../providers/movie_provider.dart';
 import '../widgets/filter_dropdown.dart';
 import '../widgets/movie_section.dart';
 import '../widgets/search_box.dart';
+import 'favorites_screen.dart';
 import 'movie_detail_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  String _query = '';
-  String _selectedGenre = 'All Genres';
-  String _selectedYear = 'All Years';
-  String _selectedRating = 'All Ratings';
-
-  List<Movie> get _filteredMovies {
-    return movies.where((movie) {
-      final matchesQuery = movie.title.toLowerCase().contains(
-        _query.toLowerCase(),
-      );
-      final matchesGenre =
-          _selectedGenre == 'All Genres' || movie.genre == _selectedGenre;
-      final matchesYear =
-          _selectedYear == 'All Years' ||
-          movie.year.toString() == _selectedYear;
-      final matchesRating =
-          _selectedRating == 'All Ratings' ||
-          movie.rating >=
-              double.parse(_selectedRating.replaceAll('+', '').trim());
-      return matchesQuery && matchesGenre && matchesYear && matchesRating;
-    }).toList();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final groupedMovies = <String, List<Movie>>{
-      for (final genre in genres.where((genre) => genre != 'All Genres'))
-        genre: _filteredMovies.where((movie) => movie.genre == genre).toList(),
-    };
+    final provider = context.watch<MovieProvider>();
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -53,53 +23,72 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RichText(
-                text: const TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Cine',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+              Row(
+                children: [
+                  Expanded(
+                    child: RichText(
+                      text: const TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Cine',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Vault',
+                            style: TextStyle(
+                              color: Color(0xFFE50914),
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    TextSpan(
-                      text: 'Vault',
-                      style: TextStyle(
-                        color: Color(0xFFE50914),
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  IconButton(
+                    tooltip: 'Favorites',
+                    color: const Color(0xFFE50914),
+                    icon: const Icon(Icons.star),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FavoritesScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
               const SizedBox(height: 18),
-              SearchBox(onChanged: (value) => setState(() => _query = value)),
+              SearchBox(onChanged: context.read<MovieProvider>().updateSearch),
               const SizedBox(height: 18),
               FilterDropdown(
                 label: 'GENRE',
-                value: _selectedGenre,
-                items: genres,
-                onChanged: (value) => setState(() => _selectedGenre = value),
+                value: provider.selectedGenre,
+                items: provider.genreOptions,
+                onChanged: context.read<MovieProvider>().updateGenre,
               ),
               const SizedBox(height: 14),
               FilterDropdown(
                 label: 'YEAR',
-                value: _selectedYear,
-                items: years,
-                onChanged: (value) => setState(() => _selectedYear = value),
+                value: provider.selectedYear,
+                items: provider.yearOptions,
+                onChanged: context.read<MovieProvider>().updateYear,
               ),
               const SizedBox(height: 14),
               FilterDropdown(
                 label: 'RATING',
-                value: _selectedRating,
-                items: ratings,
-                onChanged: (value) => setState(() => _selectedRating = value),
+                value: provider.selectedRating,
+                items: provider.ratingOptions,
+                onChanged: context.read<MovieProvider>().updateRating,
               ),
               const SizedBox(height: 22),
-              if (_filteredMovies.isEmpty)
+              if (!provider.hasResults)
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 48),
                   child: Center(
@@ -110,21 +99,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 )
               else
-                for (final entry in groupedMovies.entries)
-                  if (entry.value.isNotEmpty)
-                    MovieSection(
-                      title: '${entry.key} Movies',
-                      movies: entry.value,
-                      onMovieTap: (movie) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                MovieDetailScreen(movie: movie),
-                          ),
-                        );
-                      },
-                    ),
+                for (final entry in provider.groupedMovies.entries)
+                  MovieSection(
+                    title: '${entry.key} Movies',
+                    movies: entry.value,
+                    onMovieTap: (movie) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MovieDetailScreen(movie: movie),
+                        ),
+                      );
+                    },
+                  ),
             ],
           ),
         ),

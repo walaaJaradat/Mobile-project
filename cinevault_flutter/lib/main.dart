@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'providers/movie_provider.dart';
 import 'screens/splash_screen.dart';
 
 void main() {
-  runApp(const CineVaultApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => MovieProvider(),
+      child: const CineVaultApp(),
+    ),
+  );
 }
 
 class CineVaultApp extends StatelessWidget {

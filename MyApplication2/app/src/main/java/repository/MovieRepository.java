@@ -1,9 +1,13 @@
 package repository;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import model.Movie;
 import model.MovieResponse;
@@ -13,9 +17,20 @@ import retrofit2.Call;
 
 public class MovieRepository {
 
+    private static final String PREFS_FAVORITES = "favorites";
+
+    private final Context context;
     private MovieApiService apiService;
 
     public MovieRepository() {
+        context = null;
+        apiService = RetrofitClient
+                .getClient()
+                .create(MovieApiService.class);
+    }
+
+    public MovieRepository(Context context) {
+        this.context = context.getApplicationContext();
         apiService = RetrofitClient
                 .getClient()
                 .create(MovieApiService.class);
@@ -76,5 +91,38 @@ public class MovieRepository {
                 "1990",
                 "1972"
         };
+    }
+
+    public boolean isFavorite(String title) {
+        return getFavoritePrefs().getBoolean(title, false);
+    }
+
+    public boolean toggleFavorite(String title) {
+        boolean isFavorite = isFavorite(title);
+        boolean newFavoriteState = !isFavorite;
+        getFavoritePrefs().edit().putBoolean(title, newFavoriteState).apply();
+        return newFavoriteState;
+    }
+
+    public List<Movie> getFavoriteMovies() {
+        Map<String, ?> savedFavorites = getFavoritePrefs().getAll();
+        List<Movie> allMovies = getLocalMovies();
+        List<Movie> favorites = new ArrayList<>();
+
+        for (Movie movie : allMovies) {
+            Object isFavorite = savedFavorites.get(movie.getTitle());
+            if (Boolean.TRUE.equals(isFavorite)) {
+                favorites.add(movie);
+            }
+        }
+
+        return favorites;
+    }
+
+    private SharedPreferences getFavoritePrefs() {
+        if (context == null) {
+            throw new IllegalStateException("Context is required for favorite operations");
+        }
+        return context.getSharedPreferences(PREFS_FAVORITES, Context.MODE_PRIVATE);
     }
 }

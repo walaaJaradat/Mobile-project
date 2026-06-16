@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/movie.dart';
+import '../providers/movie_provider.dart';
 
 class MovieDetailScreen extends StatelessWidget {
   const MovieDetailScreen({super.key, required this.movie});
@@ -9,12 +11,24 @@ class MovieDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<MovieProvider>();
+    final isFavorite = provider.isFavorite(movie);
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
         title: Text(movie.title),
+        actions: [
+          IconButton(
+            icon: Icon(
+              isFavorite ? Icons.star : Icons.star_border,
+              color: const Color(0xFFE50914),
+            ),
+            onPressed: () => context.read<MovieProvider>().toggleFavorite(movie),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -82,6 +96,33 @@ class MovieDetailScreen extends StatelessWidget {
                       color: Color(0xFFD0D0D0),
                       fontSize: 15,
                       height: 1.45,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () =>
+                          context.read<MovieProvider>().toggleFavorite(movie),
+                      icon: Icon(
+                        isFavorite ? Icons.star : Icons.star_border,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        isFavorite
+                            ? 'Remove from Favorites'
+                            : 'Add to Favorites',
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isFavorite
+                            ? const Color(0xFF333333)
+                            : const Color(0xFFE50914),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
                     ),
                   ),
                 ],
