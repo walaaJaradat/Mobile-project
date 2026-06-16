@@ -17,7 +17,7 @@ import java.util.List;
 import model.Movie;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoriteVH> {
-
+// FavoritesAdapter have the Favorites movie details (to show in Favorite screen )
     private final List<Movie> movies;
 
     public FavoritesAdapter(List<Movie> movies) {

@@ -29,7 +29,7 @@ public class DetailsViewModel extends ViewModel {
         this.title = title;
         favoriteState.setValue(repository.isFavorite(title));
     }
-
+    // add the favorite movie to the favorite screen
     public void toggleFavorite() {
         boolean newFavoriteState = repository.toggleFavorite(title);
         favoriteState.setValue(newFavoriteState);

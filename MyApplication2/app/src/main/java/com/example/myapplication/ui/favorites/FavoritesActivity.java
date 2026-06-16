@@ -50,6 +50,7 @@ public class FavoritesActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this, factory).get(FavoritesViewModel.class);
     }
 
+
     private void setupRecyclerView() {
         rvFavorites.setLayoutManager(new GridLayoutManager(this, 4));
     }
@@ -58,6 +59,7 @@ public class FavoritesActivity extends AppCompatActivity {
         viewModel.getFavoriteMovies().observe(this, this::renderFavorites);
     }
 
+    // to show the favorite movies
     private void renderFavorites(List<Movie> favoriteMovies) {
         boolean isEmpty = favoriteMovies.isEmpty();
 

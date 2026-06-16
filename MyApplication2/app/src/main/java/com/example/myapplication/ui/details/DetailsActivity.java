@@ -45,7 +45,7 @@ public class DetailsActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_IMAGE, movie.getImageResId());
         return intent;
     }
-
+        //override the on create method
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -13,7 +13,7 @@ public class FavoritesViewModelFactory implements ViewModelProvider.Factory {
     public FavoritesViewModelFactory(MovieRepository repository) {
         this.repository = repository;
     }
-
+    // support warning when dosent checked 
     @NonNull
     @Override
     @SuppressWarnings("unchecked")

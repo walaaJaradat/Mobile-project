@@ -10,7 +10,7 @@ import model.Movie;
 import repository.MovieRepository;
 
 public class FavoritesViewModel extends ViewModel {
-
+    //
     private final MovieRepository repository;
     private final MutableLiveData<List<Movie>> favoriteMovies = new MutableLiveData<>();
 
