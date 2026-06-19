@@ -9,19 +9,14 @@ class MovieProvider extends ChangeNotifier {
   String _query = '';
   String _selectedGenre = 'All Genres';
   String _selectedYear = 'All Years';
-  String _selectedRating = 'All Ratings';
 
   String get selectedGenre => _selectedGenre;
 
   String get selectedYear => _selectedYear;
 
-  String get selectedRating => _selectedRating;
-
   List<String> get genreOptions => genres;
 
   List<String> get yearOptions => years;
-
-  List<String> get ratingOptions => ratings;
 
   List<Movie> get favorites => List.unmodifiable(_favorites);
 
@@ -61,11 +56,6 @@ class MovieProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateRating(String value) {
-    _selectedRating = value;
-    notifyListeners();
-  }
-
   bool isFavorite(Movie movie) {
     return _favorites.any((favorite) => favorite.title == movie.title);
   }
@@ -87,10 +77,6 @@ class MovieProvider extends ChangeNotifier {
         _selectedGenre == 'All Genres' || movie.genre == _selectedGenre;
     final matchesYear =
         _selectedYear == 'All Years' || movie.year.toString() == _selectedYear;
-    final matchesRating =
-        _selectedRating == 'All Ratings' ||
-        movie.rating >= double.parse(_selectedRating.replaceAll('+', ''));
-
-    return matchesQuery && matchesGenre && matchesYear && matchesRating;
+    return matchesQuery && matchesGenre && matchesYear;
   }
 }

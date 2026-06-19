@@ -80,13 +80,6 @@ class HomeScreen extends StatelessWidget {
                 items: provider.yearOptions,
                 onChanged: context.read<MovieProvider>().updateYear,
               ),
-              const SizedBox(height: 14),
-              FilterDropdown(
-                label: 'RATING',
-                value: provider.selectedRating,
-                items: provider.ratingOptions,
-                onChanged: context.read<MovieProvider>().updateRating,
-              ),
               const SizedBox(height: 22),
               if (!provider.hasResults)
                 const Padding(
